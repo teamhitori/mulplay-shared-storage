@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>TeamHitori.Mulplay.Shared.Storage</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>TeamHitori.Mulplay.Shared.Storage</PackageId>
+    <Version>1.0.0.2</Version>
+    <Authors>ReubenH</Authors>
+    <Company>Team Hitori</Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.8.4" />
+    <PackageReference Include="Microsoft.Azure.Cosmos" Version="3.19.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Polly" Version="7.2.2" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
+    <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
+  </ItemGroup>
+
+</Project>
