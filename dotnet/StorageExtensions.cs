@@ -235,7 +235,7 @@ namespace TeamHitori.Mulplay.shared.storage
             catch (Exception ex)
             {
                 storage.LogError($"Encountered exception {ex.Message} [{fqn}] {document?.primaryName}", ex);
-                throw ex;
+                throw;
             }
 
         }
@@ -295,15 +295,15 @@ namespace TeamHitori.Mulplay.shared.storage
         {
             var fqn = fqnOverride ?? typeof(T).FullName;
 
-            var finalRes = storage.GetCacheOrElse($"[{storage.UserId}][findAllByType][{fqn}]", () =>
+            var finalRes = storage.GetCacheOrElse($"[{storage.UserId}][findAllByType][{fqn}]", async () =>
             {
-                var liveDocs = storage.Repository.ExecuteSproc<List<UserDocument>>(
+                var liveDocs = await storage.Repository.ExecuteSproc<List<UserDocument>>(
                            "findAllByType",
                            storage.UserId,
                            new[] {
                     fqn,
                     storage.UserId
-                           }).Result;
+                           });
 
                 if (liveDocs == null)
                 {
@@ -319,7 +319,7 @@ namespace TeamHitori.Mulplay.shared.storage
                 return result;
             });
 
-            return finalRes;
+            return await finalRes;
         }
 
         /// <summary>
@@ -346,19 +346,20 @@ namespace TeamHitori.Mulplay.shared.storage
         {
             var fqn = typeof(T).FullName;
 
+            primaryName = primaryName.ToLower();
 
-            var finalRes = storage.GetCacheOrElse($"[{storage.UserId}][{primaryName}][{fqn}]", () =>
+            var finalRes = storage.GetCacheOrElse($"[{storage.UserId}][{primaryName}][{fqn}]", async () =>
             {
                 
 
-                var docsString = storage.Repository.ExecuteSproc<String>(
+                var docsString = await storage.Repository.ExecuteSproc<String>(
                                 "findDocumentByPrimaryName",
                                 storage.UserId,
                                 new[] {
                                     primaryName,
                                     fqn,
                                     storage.UserId
-                                }).Result;
+                                });
 
                 var wrappedJson = $"{{\"docs\":{docsString}}}";
                 var wrapper = wrappedJson.GetObject<DocWrapper>();
@@ -395,7 +396,7 @@ namespace TeamHitori.Mulplay.shared.storage
 
             });
 
-            return finalRes;
+            return await finalRes;
         }
 
         public static T GetCacheOrElse<T>(this Storage storage, string primaryKey, Func<T> altFunc) where T : class
@@ -640,7 +641,7 @@ namespace TeamHitori.Mulplay.shared.storage
 
         }
 
-        public static async Task<string> GetSasToken(this Storage storage, BlobSasPermissions blobSasPermissions, string autoDelete = "Day1")
+        public static string GetSasToken(this Storage storage, BlobSasPermissions blobSasPermissions, string autoDelete = "Day1")
         {
             // Get a user delegation key for the Blob service that's valid for seven days.
             // You can use the key to generate any number of shared access signatures over the lifetime of the key.

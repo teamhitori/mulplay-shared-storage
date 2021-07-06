@@ -78,6 +78,7 @@
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, $"ExecuteSproc: {ex.Message}");
                 return null;
             }
 
@@ -197,8 +198,9 @@
                 var database = await _client.CreateDatabaseIfNotExistsAsync(DatabaseId);
             }
 
-            catch (Exception e)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, $"ExecuteSproc: {ex.Message}");
                 throw;
             }
         }

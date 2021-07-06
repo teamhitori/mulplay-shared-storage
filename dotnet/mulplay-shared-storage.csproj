@@ -11,6 +11,10 @@
     <Authors>ReubenH</Authors>
     <Company>Team Hitori</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyName>TeamHitori.Mulplay.Shared.Storage</AssemblyName>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/teamhitori/mulplay-shared-storage</RepositoryUrl>
+    <Description>Mul Play Shared storage Library for CRUD operations against Azure</Description>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +25,13 @@
     <PackageReference Include="Polly" Version="7.2.2" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
     <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
