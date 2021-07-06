@@ -22,7 +22,9 @@ jobs:
         dotnet-version: 5.0.x
     - name: Restore dependencies
       run: dotnet restore
+    - name: Output Run Number
+      run: echo "1.0.0.${{ github.run_number }}"
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build /p:AssemblyVersion=1.0.0.${{ github.run_number }} /property:Version=1.0.0.${{ github.run_number }} --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
