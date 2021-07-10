@@ -29,5 +29,5 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
     - name: Push Nuget
-      run: dotnet nuget push bin/Debug/TeamHitori.Mulplay.Shared.Storage.1.0.0.${{ github.run_number }}.nupkg --api-key {{ secrets.NUGETKEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push bin/Debug/TeamHitori.Mulplay.Shared.Storage.1.0.0.${{ github.run_number }}.nupkg --api-key ${{ secrets.NUGETKEY }} --source https://api.nuget.org/v3/index.json
 
