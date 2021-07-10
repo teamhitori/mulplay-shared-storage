@@ -295,7 +295,7 @@ namespace TeamHitori.Mulplay.shared.storage
         {
             var fqn = fqnOverride ?? typeof(T).FullName;
 
-            var finalRes = storage.GetCacheOrElse($"[{storage.UserId}][findAllByType][{fqn}]", async () =>
+            var finalRes = await storage.GetCacheOrElse($"[{storage.UserId}][findAllByType][{fqn}]", async () =>
             {
                 var liveDocs = await storage.Repository.ExecuteSproc<List<UserDocument>>(
                            "findAllByType",
@@ -319,7 +319,7 @@ namespace TeamHitori.Mulplay.shared.storage
                 return result;
             });
 
-            return await finalRes;
+            return finalRes;
         }
 
         /// <summary>
@@ -348,7 +348,7 @@ namespace TeamHitori.Mulplay.shared.storage
 
             primaryName = primaryName.ToLower();
 
-            var finalRes = storage.GetCacheOrElse($"[{storage.UserId}][{primaryName}][{fqn}]", async () =>
+            var finalRes = await storage.GetCacheOrElse($"[{storage.UserId}][{primaryName}][{fqn}]", async () =>
             {
                 
 
@@ -396,10 +396,10 @@ namespace TeamHitori.Mulplay.shared.storage
 
             });
 
-            return await finalRes;
+            return finalRes;
         }
 
-        public static T GetCacheOrElse<T>(this Storage storage, string primaryKey, Func<T> altFunc) where T : class
+        public async static Task<T> GetCacheOrElse<T>(this Storage storage, string primaryKey, Func<Task<T>> altFunc) where T : class
         {
             T result = null;
             var fqn = typeof(T).FullName;
@@ -408,7 +408,7 @@ namespace TeamHitori.Mulplay.shared.storage
             {
                 
                 var resultVal = storage.Cache?.StringGet(primaryKey);
-                if (resultVal.HasValue)
+                if (resultVal?.HasValue == true)
                 {
                     var resultStr = resultVal.ToString();
 
@@ -430,7 +430,7 @@ namespace TeamHitori.Mulplay.shared.storage
             {
                 try
                 {
-                    var newRes = altFunc();
+                    var newRes = await altFunc();
 
                     if (newRes != null)
                     {
