@@ -28,3 +28,6 @@ jobs:
       run: dotnet build /p:AssemblyVersion=1.0.0.${{ github.run_number }} /property:Version=1.0.0.${{ github.run_number }} --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Push Nuget
+      run: dotnet nuget push dotnet\bin\Debug\TeamHitori.Mulplay.Shared.Storage.1.0.0.${{ github.run_number }}.nupkg--api-key {{ NUGETKEY }}--source https://api.nuget.org/v3/index.json
+
